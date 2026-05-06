@@ -30,11 +30,6 @@ class DataPreprocessor:
     def remove_missing_values(self, df: DataFrame) -> DataFrame:
         return df.dropna()
 
-    def cast_to_double(self, df: DataFrame) -> DataFrame:
-        for column_name in self.selected_columns:
-            df = df.withColumn(column_name, col(column_name).cast("double"))
-        return df
-
     def remove_negative_values(self, df: DataFrame) -> DataFrame:
         condition = None
 
@@ -77,11 +72,12 @@ class DataPreprocessor:
 
     def preprocess(self, df: DataFrame) -> DataFrame:
         processed_df = self.select_columns(df)
-        processed_df = self.cast_to_double(processed_df)
         processed_df = self.remove_missing_values(processed_df)
         processed_df = self.remove_negative_values(processed_df)
+
         processed_df = self.remove_basic_outliers(processed_df)
         processed_df = self.remove_outliers_percentile(processed_df)
+
         processed_df = self.limit_rows(processed_df)
 
         return processed_df
