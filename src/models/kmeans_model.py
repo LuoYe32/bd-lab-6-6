@@ -5,10 +5,10 @@ from pyspark.ml.clustering import KMeans, KMeansModel
 class KMeansClusteringModel:
     def __init__(
         self,
-        k: int = 5,
-        seed: int = 51,
-        features_col: str = "scaled_features",
-        prediction_col: str = "prediction",
+        k: int,
+        seed: int,
+        features_col: str,
+        prediction_col: str,
     ):
         self.k = k
         self.seed = seed
@@ -23,20 +23,24 @@ class KMeansClusteringModel:
             featuresCol=self.features_col,
             predictionCol=self.prediction_col,
         )
+
         self.model = estimator.fit(df)
         return self.model
 
     def predict(self, df: DataFrame) -> DataFrame:
         if self.model is None:
             raise ValueError("Model is not trained yet.")
+
         return self.model.transform(df)
 
     def get_cluster_centers(self):
         if self.model is None:
             raise ValueError("Model is not trained yet.")
+
         return self.model.clusterCenters()
 
     def save(self, path: str) -> None:
         if self.model is None:
             raise ValueError("Model is not trained yet.")
+
         self.model.write().overwrite().save(path)

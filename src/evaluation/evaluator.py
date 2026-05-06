@@ -5,8 +5,8 @@ from pyspark.ml.evaluation import ClusteringEvaluator
 class ClusteringModelEvaluator:
     def __init__(
         self,
-        features_col: str = "scaled_features",
-        prediction_col: str = "prediction",
+        features_col: str,
+        prediction_col: str,
         metric_name: str = "silhouette",
     ):
         self.features_col = features_col
@@ -19,4 +19,5 @@ class ClusteringModelEvaluator:
             predictionCol=self.prediction_col,
             metricName=self.metric_name,
         )
+
         return evaluator.evaluate(df)
