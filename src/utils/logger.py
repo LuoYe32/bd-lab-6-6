@@ -17,9 +17,10 @@ class LoggerFactory:
             datefmt="%Y-%m-%d %H:%M:%S",
         )
 
-        console_handler = logging.StreamHandler(sys.stdout)
-        console_handler.setFormatter(formatter)
+        handler = logging.StreamHandler(sys.stdout)
+        handler.setFormatter(formatter)
 
-        logger.addHandler(console_handler)
+        logger.addHandler(handler)
+        logger.propagate = False
 
         return logger
